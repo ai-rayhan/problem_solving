@@ -1,0 +1,33 @@
+import 'dart:io';
+
+class PrefixToPostfixConverter {
+  static bool isOperator(String char) {
+    return ['+', '-', '*', '/'].contains(char);
+  }
+
+  static String prefixToPostfix(String prefixExpression) {
+    List<String> stack = [];
+
+    for (int i = prefixExpression.length - 1; i >= 0; i--) {
+      String char = prefixExpression[i];
+
+      if (isOperator(char)) {
+        String operand1 = stack.removeLast();
+        String operand2 = stack.removeLast();
+        String result = operand1 + operand2 + char;
+        stack.add(result);
+      } else {
+        stack.add(char);
+      }
+    }
+
+    return stack.first;
+  }
+}
+
+void main() {
+  String prefixExpression = stdin.readLineSync() ?? "";
+
+  String postfixExpression = PrefixToPostfixConverter.prefixToPostfix(prefixExpression);
+  print(postfixExpression);
+}
